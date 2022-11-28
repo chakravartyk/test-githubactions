@@ -13,6 +13,14 @@ jobs:
         ref: ${{ github.head_ref }}
     - name: Echo in README
       run: echo Hello World modified ${{ github.sha }} >> README.md
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Linting
+      run: |
+        pip install pre-commit
+        pre-commit run --all-files
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Update README
