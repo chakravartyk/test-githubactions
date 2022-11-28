@@ -1,0 +1,17 @@
+name: test-github-actions
+run-name: Test Run
+on: 
+  push:
+    paths:
+    - folder/**
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+    - name: Echo in README
+      run: echo Hello World modified ${{ github.sha }} > README.md
+      
+ 
