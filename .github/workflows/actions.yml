@@ -11,7 +11,13 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.head_ref }}
+  commit:
+    runs-on: ubuntu-latest
+    steps:
     - name: Echo in README
       run: echo Hello World modified ${{ github.sha }} > README.md
-      
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Update README
+    
  
