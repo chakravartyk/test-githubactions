@@ -16,7 +16,7 @@ jobs:
       with:
         python-version: 3.8
     - name: Echo in README
-      run: echo "\nHello World modified" ${{ github.sha }} >> README.md
+      run: echo; echo Hello World modified" ${{ github.sha }} >> README.md
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Update README
