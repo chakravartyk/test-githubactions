@@ -20,6 +20,7 @@ jobs:
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Update README
+    - uses: pre-commit/action@v3.0.0
     - name: Linting
       uses: pre-commit-ci/lite-action@v1.0.0
       if: always()
