@@ -1,6 +1,6 @@
 name: test-github-actions
 run-name: Test Run
-on: 
+on:
   push:
     paths:
     - folder/**
@@ -21,6 +21,7 @@ jobs:
       with:
         commit_message: Update README
     - uses: pre-commit/action@v3.0.0
+    - uses: stefanzweifel/git-auto-commit-action@v4
     - name: Linting
       uses: pre-commit-ci/lite-action@v1.0.0
       if: always()
