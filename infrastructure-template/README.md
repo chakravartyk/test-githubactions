@@ -25,3 +25,4 @@ Run the below command from the root directory to fix lint errors
 pre-commit run --files {{ cloudProvider}}/{{ delivery }}/{{ environment }}/*   {{ cloudProvider}}/{{ delivery }}/{{ environment }}/bootstrap/argocd/*   {{ cloudProvider}}/{{ delivery }}/{{ environment }}/bootstrap/ska/*
 
 ```
+                

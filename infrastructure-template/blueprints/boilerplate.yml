@@ -15,3 +15,4 @@ dependencies:
   - name: ska
     template-url: "{{ templateFolder }}/../templates/bootstrap/ska/"
     output-folder: "{{ outputFolder }}/{{ .GitopsRepoTargetPath }}/bootstrap/ska"
+         
