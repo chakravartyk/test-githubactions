@@ -3,7 +3,7 @@ run-name: Test Run
 on:
   push:
     paths:
-    - folder/**
+    - infrastructure-templates/**
 jobs:
   checkout:
     runs-on: ubuntu-latest
