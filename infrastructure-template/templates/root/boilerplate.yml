@@ -1,0 +1,7 @@
+variables:
+ - name: GitopsRepoTargetPath
+   description: Path to infrastructure-gitops repo
+
+ - name: targetRevision
+   description: infrastructure-gitops repo branch
+   default: main

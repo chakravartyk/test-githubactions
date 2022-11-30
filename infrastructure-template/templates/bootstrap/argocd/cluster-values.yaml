@@ -1,0 +1,30 @@
+argocd:
+  controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: {{ .argoServiceMonitorEnabled }}
+  selfManagedPath: {{ .GitopsRepoTargetPath }}
+  selfManagedRepoUrl: https://github.com/DeloitteHux/infrastructure-gitops.git
+  ssoUri: https://{{ .argoIngressHost }}/api/dex/callback
+  selfManagedRevision: {{ .argoSelfManagedRevision }}
+  ssoIssuer: https://deloittedigital-ms.okta.com
+  ssoAdminGroup: app-github-hux-techops-admin
+  extraPolicy: |
+    p, role:testrole, applications, create, *, allow
+    p, role:testrole, applications, get, *, allow
+  server:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: {{ .argoServiceMonitorEnabled }}
+    config:
+      url: https://{{ .argoIngressHost }}
+    ingress:
+      enabled: {{ .argoIngressEnabled}}
+      hosts:
+      - {{ .argoIngressHost}}
+      tls:
+      - hosts:
+        - {{ .argoIngressHost}}
+        secretName: argocd-server-tls
