@@ -32,15 +32,15 @@ jobs:
         BOILERPLATE_VERSION: v0.5.3
         GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
 
-    - name: verify installation
-      run: |
-        terragrunt -v
-        boilerplate -v
-    # - name: Echo in README
-    #   run: echo; echo Hello World modified ${{ github.sha }} >> README.md
-    # - uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: Update README
+    # - name: verify installation
+    #   run: |
+    #     terragrunt -v
+    #     boilerplate -v
+    # # - name: Echo in README
+    # #   run: echo; echo Hello World modified ${{ github.sha }} >> README.md
+    # # - uses: stefanzweifel/git-auto-commit-action@v4
+    # #   with:
+    # #     commit_message: Update README
 
     - name: Generate boilerplate template
       run: |
