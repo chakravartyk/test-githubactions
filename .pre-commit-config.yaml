@@ -9,4 +9,5 @@ repos:
      - id: check-case-conflict
      - id: fix-byte-order-marker
      - id: check-yaml
-       exclude: ^(templates|blueprints)/
+       exclude: templates
+       args: [--allow-multiple-documents]

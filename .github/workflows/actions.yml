@@ -49,7 +49,8 @@ jobs:
 
     - uses: pre-commit/action@v3.0.0
       continue-on-error: true
-    # - uses: stefanzweifel/git-auto-commit-action@v4
+    - uses: stefanzweifel/git-auto-commit-action@v4
+
     # - name: Linting
     #   uses: pre-commit-ci/lite-action@v1.0.0
     #   if: always()
