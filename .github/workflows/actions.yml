@@ -36,15 +36,16 @@ jobs:
       run: |
         terragrunt -v
         boilerplate -v
-        pwd
-    # # - name: Echo in README
-    # #   run: echo; echo Hello World modified ${{ github.sha }} >> README.md
-    # # - uses: stefanzweifel/git-auto-commit-action@v4
-    # #   with:
-    # #     commit_message: Update README
+        terraform -v
 
     - name: Generate boilerplate template
-      run: boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file ./infrastructure-template/environments/scadev/*
+      run: boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file $CONFIG_PATH
+      env:
+        CONFIG_PATH: infrastructure-template/environments/scadev/*
+
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Generate bp template
 
     - uses: pre-commit/action@v3.0.0
       continue-on-error: true
