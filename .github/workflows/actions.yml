@@ -49,9 +49,11 @@ jobs:
 
     - name: pre-commit scan
       run: |
-        pip install pre-commit
-        echo ${{ github.head_ref }}
-      continue-on-error: true
+        echo ${{ GITHUB_REF_NAME }}
+        git diff --name-only --no-pager main...${{ GITHUB_REF_NAME }}
+
+
+      #continue-on-error: true
 
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:
