@@ -51,9 +51,7 @@ jobs:
       run: |
         echo ${{ GITHUB_REF_NAME }}
         git diff --name-only --no-pager main...${{ GITHUB_REF_NAME }}
-
-
-      #continue-on-error: true
+      continue-on-error: true
 
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:
