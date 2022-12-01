@@ -8,14 +8,15 @@ jobs:
   checkout:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
     - name: pre-commit scan
       run: |
-        echo ${{ github.ref_name }}
-        git diff --name-only origin/HEAD...HEAD
+        echo "::set-env name=ENVIRONMENTS::$(git diff -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments/ | xargs dirname)"
+        echo "$ENVIRONMENTS"
+        for env in "$ENVIRONMENTS"; do if [ $(ls -A "$env")]; then echo $env; fi; done
       continue-on-error: true
 
     # - name: Set up Python 3.8
