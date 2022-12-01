@@ -23,7 +23,7 @@ jobs:
 
     - name: install boilerplate
       run: |
-        curl -Ls https://${{ secrets.OAUTH_GITHUB_KEY }}@raw.githubusercontent.com/gruntwork-io/gruntwork-installer/v0.0.38/bootstrap-gruntwork-installer.sh
+        curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/$GRUNTWORK_INSTALLER_VERSION/bootstrap-gruntwork-installer.sh | bash /dev/stdin --no-sudo true --version $GRUNTWORK_INSTALLER_VERSION
       env:
         GRUNTWORK_INSTALLER_VERSION: v0.0.38
         TERRAGRUNT_VERSION: v0.40.2
