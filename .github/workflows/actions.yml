@@ -43,7 +43,10 @@ jobs:
     #     commit_message: Update README
 
     - name: Generate boilerplate template
-      run: boilerplate --template-url ./infrastructure-template --var-file "$PATH" --output-folder .  --non-interactive
+      run: |
+        boilerplate -v
+        ls
+        boilerplate --template-url ./infrastructure-template --var-file infrastructure-template/environments/scadev/* --output-folder .  --non-interactive
       env:
         PATH: infrastructure-template/environments/scadev/*
     - uses: pre-commit/action@v3.0.0
