@@ -32,10 +32,11 @@ jobs:
         BOILERPLATE_VERSION: v0.5.3
         GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
 
-    # - name: verify installation
-    #   run: |
-    #     terragrunt -v
-    #     boilerplate -v
+    - name: verify installation
+      run: |
+        terragrunt -v
+        boilerplate -v
+        pwd
     # # - name: Echo in README
     # #   run: echo; echo Hello World modified ${{ github.sha }} >> README.md
     # # - uses: stefanzweifel/git-auto-commit-action@v4
@@ -44,11 +45,7 @@ jobs:
 
     - name: Generate boilerplate template
       run: |
-        boilerplate -v
         ls
-        boilerplate --template-url ./infrastructure-template --var-file infrastructure-template/environments/scadev/* --output-folder .  --non-interactive
-      env:
-        PATH: infrastructure-template/environments/scadev/*
     - uses: pre-commit/action@v3.0.0
       continue-on-error: true
     # - uses: stefanzweifel/git-auto-commit-action@v4
