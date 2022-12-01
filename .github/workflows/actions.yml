@@ -16,7 +16,7 @@ jobs:
       with:
         python-version: 3.8
     - name: install boilerplate
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
       with:
         repository: gruntwork-io/gruntwork-installer
         token: ${{ secrets.OAUTH_GITHUB_KEY }}
