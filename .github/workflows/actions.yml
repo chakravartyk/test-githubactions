@@ -50,7 +50,7 @@ jobs:
     - name: pre-commit scan
       run: |
         pip install pre-commit
-        git diff -r --name-only origin/HEAD...HEAD --
+        git diff origin/HEAD... --name-only
       continue-on-error: true
 
     # - uses: stefanzweifel/git-auto-commit-action@v4
