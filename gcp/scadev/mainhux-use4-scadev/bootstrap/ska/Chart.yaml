@@ -1,0 +1,3 @@
+apiVersion: v2
+name: ska-root
+version: 0.0.1
