@@ -15,15 +15,15 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
-    - name: checkout gruntwork
-      uses: actions/checkout@v3
-      with:
-        repository: gruntwork-io/gruntwork-installer
-        token: ${{ secrets.OAUTH_GITHUB_KEY }}
+    # - name: checkout gruntwork
+    #   uses: actions/checkout@v3
+    #   with:
+    #     repository: gruntwork-io/gruntwork-installer
+    #     token: ${{ secrets.OAUTH_GITHUB_KEY }}
 
     - name: install boilerplate
       run: |
-        sudo curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/v0.0.38/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version v0.0.38
+        sudo curl -Ls https://${{ secrets.OAUTH_GITHUB_KEY }}@raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version "$GRUNTWORK_INSTALLER_VERSION"
         gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
         gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag "$BOILERPLATE_VERSION" --no-sudo true
       env:
@@ -46,6 +46,7 @@ jobs:
     - name: Generate boilerplate template
       run: |
         ls
+        boilerplate -v
     - uses: pre-commit/action@v3.0.0
       continue-on-error: true
     # - uses: stefanzweifel/git-auto-commit-action@v4
