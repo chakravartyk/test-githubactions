@@ -41,8 +41,13 @@ jobs:
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:
     #     commit_message: Update README
-    # - uses: pre-commit/action@v3.0.0
-    #   continue-on-error: true
+
+    - name: Generate boilerplate template
+      run: boilerplate --template-url ./infrastructure-template --var-file "$PATH" --output-folder .  --non-interactive
+      env:
+        PATH: infrastructure-template/environments/scadev/*
+    - uses: pre-commit/action@v3.0.0
+      continue-on-error: true
     # - uses: stefanzweifel/git-auto-commit-action@v4
     # - name: Linting
     #   uses: pre-commit-ci/lite-action@v1.0.0
