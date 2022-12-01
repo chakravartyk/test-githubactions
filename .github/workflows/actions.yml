@@ -15,7 +15,7 @@ jobs:
     - name: pre-commit scan
       run: |
         echo ${{ github.ref_name }}
-        git diff --name-only --no-pager main...${{ github.ref_name }}
+        git diff --name-only --no-pager main...${{ github.ref_name }} --
       continue-on-error: true
 
     # - name: Set up Python 3.8
