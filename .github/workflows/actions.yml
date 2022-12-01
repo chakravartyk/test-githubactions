@@ -15,19 +15,26 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
-    - name: install boilerplate
+    - name: checkout gruntwork
       uses: actions/checkout@v3
       with:
         repository: gruntwork-io/gruntwork-installer
         token: ${{ secrets.OAUTH_GITHUB_KEY }}
+
+    - name: install boilerplate
+      run: |
+        curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh | bash /dev/stdin --no-sudo true --version "$GRUNTWORK_INSTALLER_VERSION"
+        gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
+        gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag "$BOILERPLATE_VERSION" --no-sudo true
       env:
         GRUNTWORK_INSTALLER_VERSION: 0.0.38
         TERRAGRUNT_VERSION: v0.40.2
         BOILERPLATE_VERSION: v0.5.3
-    # - name: verify installation
-    #   run: |
-    #     terragrunt -v
-    #     boilerplate -v
+
+    - name: verify installation
+      run: |
+        terragrunt -v
+        boilerplate -v
     # - name: Echo in README
     #   run: echo; echo Hello World modified ${{ github.sha }} >> README.md
     # - uses: stefanzweifel/git-auto-commit-action@v4
