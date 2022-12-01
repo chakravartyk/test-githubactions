@@ -15,7 +15,7 @@ jobs:
     - name: pre-commit scan
       run: |
         echo ${{ github.ref_name }}
-        git diff --name-only origin/main...HEAD
+        git diff --name-only origin/HEAD...HEAD
       continue-on-error: true
 
     # - name: Set up Python 3.8
