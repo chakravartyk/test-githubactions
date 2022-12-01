@@ -9,4 +9,4 @@ repos:
      - id: check-case-conflict
      - id: fix-byte-order-marker
      - id: check-yaml
-       exclude: templates/
+       exclude: ^(templates|blueprints)/
