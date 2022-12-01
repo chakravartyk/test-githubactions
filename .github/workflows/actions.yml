@@ -47,9 +47,13 @@ jobs:
       with:
         commit_message: Generate bp template
 
-    - uses: pre-commit/action@v3.0.0
+    - name: pre-commit scan
+      run: pre-commit run --from-ref origin/HEAD --to-ref HEAD --verbose
       continue-on-error: true
+
     - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: fix lint
 
     # - name: Linting
     #   uses: pre-commit-ci/lite-action@v1.0.0
