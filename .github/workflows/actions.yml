@@ -50,12 +50,12 @@ jobs:
     - name: pre-commit scan
       run: |
         pip install pre-commit
-        pre-commit run --from-ref origin/HEAD --to-ref HEAD --verbose
+        git diff -r --name-only origin/HEAD...HEAD
       continue-on-error: true
 
-    - uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: fix lint
+    # - uses: stefanzweifel/git-auto-commit-action@v4
+    #   with:
+    #     commit_message: fix lint
 
     # - name: Linting
     #   uses: pre-commit-ci/lite-action@v1.0.0
