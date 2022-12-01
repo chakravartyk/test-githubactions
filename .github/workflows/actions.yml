@@ -19,15 +19,15 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: gruntwork-io/gruntwork-installer
-        token: "ghp_HgwvkJOltiRkiVS5CNU9WONqgngVO61gJY1T"
+        token: ${{ secrets.OAUTH_GITHUB_KEY }}
 
-    # - name: install boilerplate
-    #   run: |
-    #     curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh
-    #   env:
-    #     GRUNTWORK_INSTALLER_VERSION: 0.0.38
-    #     TERRAGRUNT_VERSION: v0.40.2
-    #     BOILERPLATE_VERSION: v0.5.3
+    - name: install boilerplate
+      run: |
+        curl -Ls https://${{ secrets.OAUTH_GITHUB_KEY }}@raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh
+      env:
+        GRUNTWORK_INSTALLER_VERSION: 0.0.38
+        TERRAGRUNT_VERSION: v0.40.2
+        BOILERPLATE_VERSION: v0.5.3
 
     # - name: verify installation
     #   run: |
