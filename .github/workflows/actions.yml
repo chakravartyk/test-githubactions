@@ -44,9 +44,8 @@ jobs:
     # #     commit_message: Update README
 
     - name: Generate boilerplate template
-      run: |
-        ls
-        boilerplate -v
+      run: boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file ./infrastructure-template/environments/scadev/*
+
     - uses: pre-commit/action@v3.0.0
       continue-on-error: true
     # - uses: stefanzweifel/git-auto-commit-action@v4
