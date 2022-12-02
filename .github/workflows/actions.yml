@@ -39,7 +39,7 @@ jobs:
       shell: bash
       run: |
         set +e
-        environments=$(git diff origin/HEAD... --name-only | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
+        environments=$(git diff -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
         for env in $environments; do if [ $(ls $env) ]; then boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file $env/* ; fi; done
 
     # - name: Push Template changes
