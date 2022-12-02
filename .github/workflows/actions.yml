@@ -1,5 +1,5 @@
-name: test-github-actions
-run-name: Test Run
+name: Boilerplate workflow
+run-name: Generate boilerplate argocd/ska config
 on:
   push:
     paths:
