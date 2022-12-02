@@ -1,5 +1,5 @@
 cloudProvider: gcp
-delivery: deddev
+delivery: decdev
 environment: mainhux-use4-scadev
 
 # Branch name/Revision: infrastructure-gitops repository

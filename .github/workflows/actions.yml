@@ -3,7 +3,7 @@ run-name: Test Run
 on:
   push:
     paths:
-    - folder/**
+    - infrastructure-template/**
 jobs:
   Generate-Boilerplate:
     runs-on: ubuntu-latest
@@ -18,7 +18,7 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Istall Boilerplate
+    - name: Install Boilerplate
       run: |
         sudo curl -Ls https://${{ secrets.OAUTH_GITHUB_KEY }}@raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version "$GRUNTWORK_INSTALLER_VERSION"
         gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
@@ -35,25 +35,24 @@ jobs:
         terragrunt -v
         terraform -v
 
-    - name: Generate Template
+    - name: Generate Boilerplate Template
       shell: bash
       run: |
-        set +e
-        environments=$(git diff -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
+        set +xe
+        environments=$(git diff --no-pager -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
         for env in $environments; do if [ $(ls $env) ]; then boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file $env/* ; fi; done
 
-    # - name: Push Template changes
-    #   uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: Generated boilerplate output
+    - name: Push Boilerplate Output
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Generated boilerplate output
 
-    # - name: Run linting checks
-    #   run: |
-    #     echo ${{ GITHUB_REF_NAME }}
-    #     git diff --name-only --no-pager main...${{ GITHUB_REF_NAME }}
-    #   continue-on-error: true
+    - name: Run Linting Checks
+      run: |
+        pre-commit run --from-ref origin/main --to-ref HEAD --verbose
+      continue-on-error: true
 
-    # - name: Push Lint Fixes
-    #   uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: Fixed lint-Boilerplate output
+    - name: Push Lint Fix
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Fixed lint for boilerplate output
