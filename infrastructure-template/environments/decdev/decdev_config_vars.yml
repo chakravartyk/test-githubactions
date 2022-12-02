@@ -1,0 +1,201 @@
+cloudProvider: gcp
+delivery: deddev
+environment: mainhux-use4-scadev
+
+# Branch name/Revision: infrastructure-gitops repository
+
+targetRevision: main
+
+# Argo Cluster Values
+
+argoIngressHost: argocd.scadev.hux-scadev.biz
+argoSelfManagedRevision: main
+
+# skaClusterValues
+skaResources: |-
+  externalSecrets:
+    deploySecrets:
+      grafana-secret:
+        namespace: monitoring
+        targetName: grafana-oidc
+        refreshInterval: 5m
+        singleSecret: true
+        contents:
+          key: grafana
+      grafana-admin-creds:
+        namespace: monitoring
+        targetName: grafana-admin-creds
+        refreshInterval: 5m
+        singleSecret: true
+        contents:
+          key: grafana
+        kebabcase:
+          - ADMIN_PASSWORD
+          - ADMIN_USER
+      artifactory-secret:
+        namespace: argocd
+        targetName: artifactory-secret
+        refreshInterval: 5m
+        argoRepoSecret: true
+        singleSecret: true
+        contents:
+          key: argocd
+        lowercase:
+          - URL
+          - USERNAME
+          - PASSWORD
+          - TYPE
+      argocd-oidc:
+        namespace: argocd
+        targetName: argocd-oidc
+        argoOidcSecret: true
+        refreshInterval: 5m
+        singleSecret: true
+        contents:
+          key: argocd
+        camelcase:
+          - CLIENT_ID
+          - CLIENT_SECRET
+
+skaAppClusterValues: |-
+  velero:
+    configuration:
+      backupStorageLocation:
+        bucket: hux-scadev-use4-main-bucket-backups
+        prefix: velero
+        config:
+          serviceAccount: velero@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
+    credentials:
+      useSecret: false
+
+  grafana:
+    env:
+      GF_SERVER_ROOT_URL: https://grafana.mgmthux.hux-scadev.biz
+      GF_AUTH_GENERIC_OAUTH_ENABLED: true
+    ingress:
+      annotations:
+        nginx.ingress.kubernetes.io/server-snippet: |
+          location ^~ /metrics {
+            return 301 https://grafana.mgmthux.hux-scadev.biz;
+          }
+      hosts:
+      - grafana.mgmthux.hux-scadev.biz
+      tls:
+      - hosts:
+        - grafana.mgmthux.hux-scadev.biz
+        secretName: grafana-secret-tls
+
+  blackbox:
+    ingress:
+      hosts:
+      - host: blackbox.mgmthux.hux-scadev.biz
+        paths:
+        - path: "/"
+          pathType: ImplementationSpecific
+      tls:
+      - hosts:
+        - blackbox.mgmthux.hux-scadev.biz
+        secretName: blackbox-secret-tls
+
+  ingressExternal:
+    controller:
+      service:
+        annotations:
+          domainName: '*.hux-scadev.biz'
+
+  prometheusStack:
+      alertmanager:
+        ingress:
+          hosts:
+          - alerts.mgmthux.hux-scadev.biz
+          tls:
+          - hosts:
+            - alerts.mgmthux.hux-scadev.biz
+            secretName: alertmanager-tls
+      prometheus:
+        ingress:
+          hosts:
+          - prometheus.mgmthux.hux-scadev.biz
+          tls:
+          - hosts:
+            - prometheus.mgmthux.hux-scadev.biz
+            secretName: prometheus-tls
+
+  pushgateway:
+    ingress:
+      hosts:
+      - pushgateway.mgmthux.hux-scadev.biz
+      pathType: ImplementationSpecific
+      tls:
+      - hosts:
+        - pushgateway.mgmthux.hux-scadev.biz
+        secretName: prometheus-pushgateway-tls
+
+skaClusterValues: |-
+    cluster-autoscaler:
+      enabled: false
+    metrics-server:
+      enabled: false
+    keda:
+      enabled: false
+
+# Ska Output Values
+skaOutputValuesFile: |-
+  skaResources:
+    certmanager:
+      solver:
+        cloudDNS:
+          project: us-gcp-ame-con-ttscc-npd-1
+    externalSecrets:
+      provider:
+        gcpsm:
+          projectID: us-gcp-ame-con-ttscc-npd-1
+          auth:
+            workloadIdentity:
+              clusterLocation: us-east4
+              clusterName: hux-scadev-use4-main-gke
+              serviceAccountRef:
+                name: external-secrets-sa
+                namespace: kube-system
+  certManager:
+    serviceAccount:
+      name: "cert-manager-sa"
+      annotations:
+        iam.gke.io/gcp-service-account: dns01-solver@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
+
+  externalDns:
+    serviceAccount:
+      name: "external-dns-sa"
+      annotations:
+        iam.gke.io/gcp-service-account: dns01-solver@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
+
+  externalSecrets:
+    serviceAccount:
+      name: "external-secrets-sa"
+      annotations:
+        iam.gke.io/gcp-service-account: external-secrets@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
+
+  prometheusStack:
+    prometheus:
+      serviceAccount:
+        create: true
+        name: "prometheus-stack-sa"
+        annotations:
+          iam.gke.io/gcp-service-account: prometheus-stack@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
+
+  grafana:
+    serviceAccount:
+      create: true
+      name: "grafana-sa"
+      annotations:
+        iam.gke.io/gcp-service-account: grafana@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
+
+  google-config-connector:
+    serviceAccount: terraform-cd@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
+
+  velero:
+    serviceAccount:
+      server:
+        name: "velero-sa"
+        annotations:
+          iam.gke.io/gcp-service-account: velero@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
