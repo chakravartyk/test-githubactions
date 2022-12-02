@@ -5,70 +5,55 @@ on:
     paths:
     - folder/**
 jobs:
-  checkout:
+  Generate-Boilerplate:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - name: checkout
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - name: pre-commit scan
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    - name: Istall Boilerplate
+      run: |
+        sudo curl -Ls https://${{ secrets.OAUTH_GITHUB_KEY }}@raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version "$GRUNTWORK_INSTALLER_VERSION"
+        gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
+        gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag "$BOILERPLATE_VERSION" --no-sudo true
+      env:
+        GRUNTWORK_INSTALLER_VERSION: v0.0.38
+        TERRAGRUNT_VERSION: v0.40.2
+        BOILERPLATE_VERSION: v0.5.3
+        GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
+
+    - name: Verify Installation
+      run: |
+        boilerplate -v
+        terragrunt -v
+        terraform -v
+
+    - name: Generate Template
       shell: bash
       run: |
         set +e
-        environments=$(git diff -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments | xargs dirname)
-        for env in "$environments"; do echo "Printing: $env"; done
-    # for env in "$environments"; do $(ls -A $env) ; done
-    # for env in "$environments"; do if [ "$(ls "$env")" ]; then echo "Printing: $env" ; fi; done
+        environments=$(git diff origin/HEAD... --name-only | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
+        for env in $environments; do if [ $(ls $env) ]; then boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file $env/* ; fi; done
 
-    # - name: Set up Python 3.8
-    #   uses: actions/setup-python@v1
+    # - name: Push Template changes
+    #   uses: stefanzweifel/git-auto-commit-action@v4
     #   with:
-    #     python-version: 3.8
+    #     commit_message: Generated boilerplate output
 
-
-    # - name: install boilerplate
-    #   run: |
-    #     sudo curl -Ls https://${{ secrets.OAUTH_GITHUB_KEY }}@raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version "$GRUNTWORK_INSTALLER_VERSION"
-    #     gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
-    #     gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag "$BOILERPLATE_VERSION" --no-sudo true
-    #   env:
-    #     GRUNTWORK_INSTALLER_VERSION: v0.0.38
-    #     TERRAGRUNT_VERSION: v0.40.2
-    #     BOILERPLATE_VERSION: v0.5.3
-    #     GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
-
-    # - name: verify installation
-    #   run: |
-    #     terragrunt -v
-    #     boilerplate -v
-    #     terraform -v
-
-    # - name: Generate boilerplate template
-    #   run: boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file $CONFIG_PATH
-    #   env:
-    #     CONFIG_PATH: infrastructure-template/environments/scadev/*
-
-    # - name: pre-commit scan
+    # - name: Run linting checks
     #   run: |
     #     echo ${{ GITHUB_REF_NAME }}
     #     git diff --name-only --no-pager main...${{ GITHUB_REF_NAME }}
     #   continue-on-error: true
 
-    # - name: checkout gruntwork
-    #   uses: actions/checkout@v3
+    # - name: Push Lint Fixes
+    #   uses: stefanzweifel/git-auto-commit-action@v4
     #   with:
-    #     repository: gruntwork-io/gruntwork-installer
-    #     token: ${{ secrets.OAUTH_GITHUB_KEY }}
-
-    # - uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: Generate bp template
-
-    # - uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: fix lint
-
-    # - name: Linting
-    #   uses: pre-commit-ci/lite-action@v1.0.0
-    #   if: always()
+    #     commit_message: Fixed lint-Boilerplate output
