@@ -1,9 +1,14 @@
 name: Boilerplate workflow
 run-name: Generate boilerplate argocd/ska config
+# on:
+#   push:
+#     paths:
+#     - infrastructure-template/**
 on:
-  push:
-    paths:
-    - infrastructure-template/**
+  workflow_call:
+    secrets:
+      OAUTH_GITHUB_KEY: inherit
+
 jobs:
   Generate-Boilerplate:
     runs-on: ubuntu-latest
@@ -20,6 +25,7 @@ jobs:
 
     - name: Install Boilerplate
       run: |
+        set -xeo pipefail
         sudo curl -Ls https://${{ secrets.OAUTH_GITHUB_KEY }}@raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version "$GRUNTWORK_INSTALLER_VERSION"
         gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
         gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag "$BOILERPLATE_VERSION" --no-sudo true
@@ -31,6 +37,7 @@ jobs:
 
     - name: Verify Installation
       run: |
+        set -e
         boilerplate -v
         terragrunt -v
         terraform -v
