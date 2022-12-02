@@ -1,0 +1,134 @@
+cloudProvider: gcp
+skaResources:
+  externalSecrets:
+    deploySecrets:
+      grafana-secret:
+        namespace: monitoring
+        targetName: grafana-oidc
+        refreshInterval: 5m
+        singleSecret: true
+        contents:
+          key: grafana
+      grafana-admin-creds:
+        namespace: monitoring
+        targetName: grafana-admin-creds
+        refreshInterval: 5m
+        singleSecret: true
+        contents:
+          key: grafana
+        kebabcase:
+          - ADMIN_PASSWORD
+          - ADMIN_USER
+      artifactory-secret:
+        namespace: argocd
+        targetName: artifactory-secret
+        refreshInterval: 5m
+        argoRepoSecret: true
+        singleSecret: true
+        contents:
+          key: argocd
+        lowercase:
+          - URL
+          - USERNAME
+          - PASSWORD
+          - TYPE
+      argocd-oidc:
+        namespace: argocd
+        targetName: argocd-oidc
+        argoOidcSecret: true
+        refreshInterval: 5m
+        singleSecret: true
+        contents:
+          key: argocd
+        camelcase:
+          - CLIENT_ID
+          - CLIENT_SECRET
+
+
+velero:
+  configuration:
+    backupStorageLocation:
+      bucket: hux-decdev-use4-main-bucket-backups
+      prefix: velero
+      config:
+        serviceAccount: velero@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
+  credentials:
+    useSecret: false
+
+grafana:
+  env:
+    GF_SERVER_ROOT_URL: https://grafana.mgmthux.hux-decdev.biz
+    GF_AUTH_GENERIC_OAUTH_ENABLED: true
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/server-snippet: |
+        location ^~ /metrics {
+          return 301 https://grafana.mgmthux.hux-decdev.biz;
+        }
+    hosts:
+    - grafana.mgmthux.hux-decdev.biz
+    tls:
+    - hosts:
+      - grafana.mgmthux.hux-decdev.biz
+      secretName: grafana-secret-tls
+
+blackbox:
+  ingress:
+    hosts:
+    - host: blackbox.mgmthux.hux-decdev.biz
+      paths:
+      - path: "/"
+        pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - blackbox.mgmthux.hux-decdev.biz
+      secretName: blackbox-secret-tls
+
+ingressExternal:
+  controller:
+    service:
+      annotations:
+        domainName: '*.hux-decdev.biz'
+
+prometheusStack:
+    alertmanager:
+      ingress:
+        hosts:
+        - alerts.mgmthux.hux-decdev.biz
+        tls:
+        - hosts:
+          - alerts.mgmthux.hux-decdev.biz
+          secretName: alertmanager-tls
+    prometheus:
+      ingress:
+        hosts:
+        - prometheus.mgmthux.hux-decdev.biz
+        tls:
+        - hosts:
+          - prometheus.mgmthux.hux-decdev.biz
+          secretName: prometheus-tls
+
+pushgateway:
+  ingress:
+    hosts:
+    - pushgateway.mgmthux.hux-decdev.biz
+    pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - pushgateway.mgmthux.hux-decdev.biz
+      secretName: prometheus-pushgateway-tls
+
+
+ska:
+  cluster-autoscaler:
+    enabled: false
+  metrics-server:
+    enabled: false
+  keda:
+    enabled: false
+
+
+
+
+
+
