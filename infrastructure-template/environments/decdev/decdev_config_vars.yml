@@ -1,6 +1,6 @@
 cloudProvider: gcp
 delivery: decdev
-environment: mainhux-use4-scadev
+environment: mainhux-use4-decdev
 
 # Branch name/Revision: infrastructure-gitops repository
 
@@ -8,7 +8,7 @@ targetRevision: main
 
 # Argo Cluster Values
 
-argoIngressHost: argocd.scadev.hux-scadev.biz
+argoIngressHost: argocd.decdev.hux-decdev.biz
 argoSelfManagedRevision: main
 
 # skaClusterValues
@@ -61,7 +61,7 @@ skaAppClusterValues: |-
   velero:
     configuration:
       backupStorageLocation:
-        bucket: hux-scadev-use4-main-bucket-backups
+        bucket: hux-decdev-use4-main-bucket-backups
         prefix: velero
         config:
           serviceAccount: velero@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
@@ -70,65 +70,65 @@ skaAppClusterValues: |-
 
   grafana:
     env:
-      GF_SERVER_ROOT_URL: https://grafana.mgmthux.hux-scadev.biz
+      GF_SERVER_ROOT_URL: https://grafana.mgmthux.hux-decdev.biz
       GF_AUTH_GENERIC_OAUTH_ENABLED: true
     ingress:
       annotations:
         nginx.ingress.kubernetes.io/server-snippet: |
           location ^~ /metrics {
-            return 301 https://grafana.mgmthux.hux-scadev.biz;
+            return 301 https://grafana.mgmthux.hux-decdev.biz;
           }
       hosts:
-      - grafana.mgmthux.hux-scadev.biz
+      - grafana.mgmthux.hux-decdev.biz
       tls:
       - hosts:
-        - grafana.mgmthux.hux-scadev.biz
+        - grafana.mgmthux.hux-decdev.biz
         secretName: grafana-secret-tls
 
   blackbox:
     ingress:
       hosts:
-      - host: blackbox.mgmthux.hux-scadev.biz
+      - host: blackbox.mgmthux.hux-decdev.biz
         paths:
         - path: "/"
           pathType: ImplementationSpecific
       tls:
       - hosts:
-        - blackbox.mgmthux.hux-scadev.biz
+        - blackbox.mgmthux.hux-decdev.biz
         secretName: blackbox-secret-tls
 
   ingressExternal:
     controller:
       service:
         annotations:
-          domainName: '*.hux-scadev.biz'
+          domainName: '*.hux-decdev.biz'
 
   prometheusStack:
       alertmanager:
         ingress:
           hosts:
-          - alerts.mgmthux.hux-scadev.biz
+          - alerts.mgmthux.hux-decdev.biz
           tls:
           - hosts:
-            - alerts.mgmthux.hux-scadev.biz
+            - alerts.mgmthux.hux-decdev.biz
             secretName: alertmanager-tls
       prometheus:
         ingress:
           hosts:
-          - prometheus.mgmthux.hux-scadev.biz
+          - prometheus.mgmthux.hux-decdev.biz
           tls:
           - hosts:
-            - prometheus.mgmthux.hux-scadev.biz
+            - prometheus.mgmthux.hux-decdev.biz
             secretName: prometheus-tls
 
   pushgateway:
     ingress:
       hosts:
-      - pushgateway.mgmthux.hux-scadev.biz
+      - pushgateway.mgmthux.hux-decdev.biz
       pathType: ImplementationSpecific
       tls:
       - hosts:
-        - pushgateway.mgmthux.hux-scadev.biz
+        - pushgateway.mgmthux.hux-decdev.biz
         secretName: prometheus-pushgateway-tls
 
 skaClusterValues: |-
@@ -153,7 +153,7 @@ skaOutputValuesFile: |-
           auth:
             workloadIdentity:
               clusterLocation: us-east4
-              clusterName: hux-scadev-use4-main-gke
+              clusterName: hux-decdev-use4-main-gke
               serviceAccountRef:
                 name: external-secrets-sa
                 namespace: kube-system

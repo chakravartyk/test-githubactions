@@ -38,8 +38,8 @@ jobs:
     - name: Generate Boilerplate Template
       shell: bash
       run: |
-        set +xe
-        environments=$(git diff --no-pager -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
+        set -xeo pipefail
+        environments=$(git diff -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
         for env in $environments; do if [ $(ls $env) ]; then boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file $env/* ; fi; done
 
     - name: Push Boilerplate Output
@@ -49,6 +49,7 @@ jobs:
 
     - name: Run Linting Checks
       run: |
+        pip install pre-commit
         pre-commit run --from-ref origin/main --to-ref HEAD --verbose
       continue-on-error: true
 
