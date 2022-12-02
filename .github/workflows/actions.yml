@@ -17,7 +17,7 @@ jobs:
       run: |
         set +e
         environments=$(git diff -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments | xargs dirname)
-        for env in "$environments"; do if [$(ls -A $env)]; then echo "printing $env"; fi;  done
+        for env in "$environments"; do [$(ls -A $env)]; done
     #for env in "$environments"; do if [ "$(ls "$env")" ]; then echo "Printing: $env" ; fi; done
 
     # - name: Set up Python 3.8
