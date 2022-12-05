@@ -1,5 +1,5 @@
 cloudProvider: gcp
-delivery: scadev
+delivery: scadev-test
 environment: mainhux-use4-scadev
 
 # Branch name/Revision: infrastructure-gitops repository
