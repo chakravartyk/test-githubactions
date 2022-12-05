@@ -19,6 +19,9 @@ jobs:
       with:
         python-version: 3.8
 
+    - name: Test secret
+      run: echo ${{ secrets.DELOITTEXSP_AUTOMATION_GITHUB_TOKEN }}
+
     - name: Install Boilerplate
       run: |
         set -xeo pipefail
