@@ -1,11 +1,11 @@
 name: Boilerplate workflow
-run-name: Generate boilerplate argocd/ska config
-# on:
-#   push:
-#     paths:
-#     - infrastructure-template/**
+run-name: Generate boilerplate argocd-ska config
+
 on:
   workflow_call:
+    secrets:
+      OAUTH_GITHUB_KEY:
+        required: true
 
 jobs:
   Generate-Boilerplate:
