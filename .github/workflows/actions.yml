@@ -6,8 +6,6 @@ run-name: Generate boilerplate argocd/ska config
 #     - infrastructure-template/**
 on:
   workflow_call:
-    secrets:
-      OAUTH_GITHUB_KEY: inherit
 
 jobs:
   Generate-Boilerplate:
