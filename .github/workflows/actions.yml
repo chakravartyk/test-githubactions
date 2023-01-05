@@ -14,7 +14,7 @@ jobs:
         python-version: 3.8
 
     - name: Install Boilerplate
-      uses: chakravartyk/GHA-boilerplate@v13
+      uses: chakravartyk/GHA-boilerplate@v13.1
       with:
         GRUNTWORK_INSTALLER_VERSION: v0.0.38
         BOILERPLATE_VERSION: v0.5.3
