@@ -8,18 +8,13 @@ jobs:
   Generate-Boilerplate:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
     - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
 
     - name: Install Boilerplate
-      uses: chakravartyk/GHA-boilerplate@v10
+      uses: chakravartyk/GHA-boilerplate@v11
       with:
         GRUNTWORK_INSTALLER_VERSION: v0.0.38
         BOILERPLATE_VERSION: v0.5.3
