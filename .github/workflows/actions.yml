@@ -39,12 +39,14 @@ jobs:
         GRUNTWORK_INSTALLER_VERSION: v0.0.38
         BOILERPLATE_VERSION: v0.5.3
         GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
-    
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         push: true
         tags: latest
+      env:
+        GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
 
 
     # - name: Verify Installation
