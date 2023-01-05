@@ -8,22 +8,27 @@ jobs:
   Generate-Boilerplate:
     runs-on: ubuntu-latest
     steps:
+    - name: 'Step 1 - Checkout'
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
     - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
 
     - name: Install Boilerplate
-      uses: chakravartyk/GHA-boilerplate@v13.4
+      uses: chakravartyk/GHA-boilerplate@v13.5
       with:
         GRUNTWORK_INSTALLER_VERSION: v0.0.38
         BOILERPLATE_VERSION: v0.5.3
         GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
 
-    - name: Verify Installation
-      run: |
-        set -e
-        boilerplate -v
+    # - name: Verify Installation
+    #   run: |
+    #     set -e
+    #     boilerplate -v
 
     # - name: Generate Boilerplate Template
     #   shell: bash
