@@ -28,6 +28,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.OAUTH_GITHUB_KEY }}
 
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
     # - name: Install Boilerplate
     #   id: boilerplate-image
     #   uses: chakravartyk/GHA-boilerplate@v13.6
@@ -40,8 +46,9 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: latest
         context: .
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
         build-args: GITHUB_OAUTH_TOKEN=${{ secrets.OAUTH_GITHUB_KEY }}
 
 
