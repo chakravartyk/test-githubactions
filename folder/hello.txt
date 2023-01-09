@@ -5,4 +5,4 @@ Hello infra templates!!!!
 Testing BP installation
 Tetsing composite action
 Testing dockerfile
-Tetsing ghcr3
+Tetsing ghcr4
