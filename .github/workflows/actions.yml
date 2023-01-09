@@ -21,10 +21,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    # - name: Set up Python 3.8
-    #   uses: actions/setup-python@v1
-    #   with:
-    #     python-version: 3.8
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
       with:
@@ -32,21 +28,21 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Install Boilerplate
-      id: boilerplate-image
-      uses: chakravartyk/GHA-boilerplate@v13.6
-      with:
-        GRUNTWORK_INSTALLER_VERSION: v0.0.38
-        BOILERPLATE_VERSION: v0.5.3
-        GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
+    # - name: Install Boilerplate
+    #   id: boilerplate-image
+    #   uses: chakravartyk/GHA-boilerplate@v13.6
+    #   with:
+    #     GRUNTWORK_INSTALLER_VERSION: v0.0.38
+    #     BOILERPLATE_VERSION: v0.5.3
+    #     GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         push: true
         tags: latest
-      env:
-        GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
+        context: .
+        build-args: GITHUB_OAUTH_TOKEN=${{ secrets.OAUTH_GITHUB_KEY }}
 
 
     # - name: Verify Installation
