@@ -1,0 +1,17 @@
+variables:
+- name: GitopsRepoTargetPath
+  default: "{{.cloudProvider}}/{{.delivery}}/{{.environment}}"
+  description: Path to infrastructure gitops repo directory
+
+dependencies:
+  - name: root
+    template-url: "{{ templateFolder }}/../templates/root/"
+    output-folder: "{{ outputFolder }}/{{ .GitopsRepoTargetPath }}"
+
+  - name: argocd
+    template-url: "{{ templateFolder }}/../templates/bootstrap/argocd/"
+    output-folder: "{{ outputFolder }}/{{ .GitopsRepoTargetPath }}/bootstrap/argocd"
+
+  - name: ska
+    template-url: "{{ templateFolder }}/../templates/bootstrap/ska/"
+    output-folder: "{{ outputFolder }}/{{ .GitopsRepoTargetPath }}/bootstrap/ska"

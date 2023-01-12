@@ -1,0 +1,40 @@
+variables:
+ - name: apiVersion
+   default: v2
+   description: SKA chart API version
+
+ - name: chartVersion
+   default: 0.0.1
+   description: SKA chart version.This is a dummy value, does not need to be changed
+
+ - name: skaOutputValuesFile
+   default: ""
+   description: Genrate ska outputs-values.yaml file
+
+ - name: skaRevision
+   default: main
+   description: HUX-SKA repository branch
+
+ - name: skaResources
+   default: ""
+   description: Generate ska-resources in ska cluster-outputs.yaml file
+
+ - name: skaAppClusterValues
+   default: ""
+   description: Application config for apps under ska
+
+ - name: skaGcpClusterValues
+   default: ""
+   description: Overwrite 'ska_gcp' values
+
+ - name: skaAwsClusterValues
+   default: ""
+   description: Overwrite 'ska_aws' values
+
+ - name: skaAzureClusterValues
+   default: ""
+   description: Overwrite 'ska_azure' values
+
+ - name: skaClusterValues
+   default: ""
+   description: Overwrite ska values

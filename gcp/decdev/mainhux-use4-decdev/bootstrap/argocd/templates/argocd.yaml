@@ -1,0 +1,32 @@
+{{- define "MergeValues" -}}
+{{- $externalval := .Files.Get "outputs-values.yaml" | fromYaml -}}
+{{- $clusterval := .Files.Get "cluster-values.yaml" | fromYaml -}}
+{{- $merged := deepCopy $clusterval | mergeOverwrite $externalval -}}
+{{- $merged | toYaml -}}
+{{- end -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-selfmanaged
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: ska
+  source:
+    path: argocd
+    helm:
+      version: v3
+      values: |
+{{ include "MergeValues" . | indent 10 }}
+    repoURL: https://github.com/DeloitteHux/hux-ska.git
+    targetRevision: {{ .Values.skaRevision }}
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+    - CreateNamespace=true

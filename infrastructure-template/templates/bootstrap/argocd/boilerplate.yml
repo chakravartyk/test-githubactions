@@ -1,0 +1,34 @@
+variables:
+ - name: apiVersion
+   default: v2
+   description: ArgoCD chart API version
+
+ - name: chartVersion
+   default: 0.0.1
+   description: ArgoCD chart version. This is a dummy value, does not need to be changed
+
+ - name: argoServiceMonitorEnabled
+   default: true
+   type: bool
+   description: Enable Service Monitor if prometheus is set up
+
+ - name: argoIngressEnabled
+   default: true
+   type: bool
+   description: Enable ArgoCD ingress if ingress is set up
+
+ - name: argoIngressHost
+   default: hux-argocd.biz
+   description: ArgoCD ingress host
+
+ - name: argoSelfManagedRevision
+   default: main
+   description: ArgoCD Self Managed branch name
+
+ - name: argoOutputValues
+   default: ""
+   desciption: Generate argocd output-values.yaml file
+
+ - name: skaRevision
+   default: main
+   description: HUX-SKA branch name

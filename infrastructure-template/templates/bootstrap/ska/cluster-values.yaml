@@ -1,0 +1,29 @@
+cloudProvider: {{ .cloudProvider }}
+{{ if .skaResources -}}
+skaResources:
+    {{- .skaResources | nindent 2 -}}
+{{- end }}
+
+{{ if .skaAppClusterValues }}
+{{ .skaAppClusterValues }}
+{{- end }}
+
+{{ if .skaClusterValues }}
+ska:
+    {{- .skaClusterValues | nindent 2 -}}
+{{- end }}
+
+{{ if .skaGcpClusterValues }}
+ska_gcp:
+    {{- .skaGcpClusterValues | nindent 2 -}}
+{{- end }}
+
+{{ if .skaAzureClusterValues }}
+ska_azure:
+    {{- .skaAzureClusterValues | nindent 2 -}}
+{{- end }}
+
+{{ if .skaAwsClusterValues }}
+ska_aws:
+    {{- .skaAwsClusterValues | nindent 2 -}}
+{{- end }}

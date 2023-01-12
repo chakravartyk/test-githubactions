@@ -1,0 +1,3 @@
+apiVersion: {{ .apiVersion }}
+name: ska-root
+version: {{ .chartVersion }}
