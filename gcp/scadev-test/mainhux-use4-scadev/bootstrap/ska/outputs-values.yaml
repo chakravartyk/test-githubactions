@@ -10,7 +10,7 @@ skaResources:
         auth:
           workloadIdentity:
             clusterLocation: us-east4
-            clusterName: hux-decdev-use4-main-gke
+            clusterName: hux-scadev-use4-main-gke
             serviceAccountRef:
               name: external-secrets-sa
               namespace: kube-system

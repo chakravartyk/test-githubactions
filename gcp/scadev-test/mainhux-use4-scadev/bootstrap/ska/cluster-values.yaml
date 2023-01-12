@@ -48,7 +48,7 @@ skaResources:
 velero:
   configuration:
     backupStorageLocation:
-      bucket: hux-decdev-use4-main-bucket-backups
+      bucket: hux-scadev-use4-main-bucket-backups
       prefix: velero
       config:
         serviceAccount: velero@us-gcp-ame-con-ttscc-npd-1.iam.gserviceaccount.com
@@ -57,65 +57,65 @@ velero:
 
 grafana:
   env:
-    GF_SERVER_ROOT_URL: https://grafana.mgmthux.hux-decdev.biz
+    GF_SERVER_ROOT_URL: https://grafana.mgmthux.hux-scadev.biz
     GF_AUTH_GENERIC_OAUTH_ENABLED: true
   ingress:
     annotations:
       nginx.ingress.kubernetes.io/server-snippet: |
         location ^~ /metrics {
-          return 301 https://grafana.mgmthux.hux-decdev.biz;
+          return 301 https://grafana.mgmthux.hux-scadev.biz;
         }
     hosts:
-    - grafana.mgmthux.hux-decdev.biz
+    - grafana.mgmthux.hux-scadev.biz
     tls:
     - hosts:
-      - grafana.mgmthux.hux-decdev.biz
+      - grafana.mgmthux.hux-scadev.biz
       secretName: grafana-secret-tls
 
 blackbox:
   ingress:
     hosts:
-    - host: blackbox.mgmthux.hux-decdev.biz
+    - host: blackbox.mgmthux.hux-scadev.biz
       paths:
       - path: "/"
         pathType: ImplementationSpecific
     tls:
     - hosts:
-      - blackbox.mgmthux.hux-decdev.biz
+      - blackbox.mgmthux.hux-scadev.biz
       secretName: blackbox-secret-tls
 
 ingressExternal:
   controller:
     service:
       annotations:
-        domainName: '*.hux-decdev.biz'
+        domainName: '*.hux-scadev.biz'
 
 prometheusStack:
     alertmanager:
       ingress:
         hosts:
-        - alerts.mgmthux.hux-decdev.biz
+        - alerts.mgmthux.hux-scadev.biz
         tls:
         - hosts:
-          - alerts.mgmthux.hux-decdev.biz
+          - alerts.mgmthux.hux-scadev.biz
           secretName: alertmanager-tls
     prometheus:
       ingress:
         hosts:
-        - prometheus.mgmthux.hux-decdev.biz
+        - prometheus.mgmthux.hux-scadev.biz
         tls:
         - hosts:
-          - prometheus.mgmthux.hux-decdev.biz
+          - prometheus.mgmthux.hux-scadev.biz
           secretName: prometheus-tls
 
 pushgateway:
   ingress:
     hosts:
-    - pushgateway.mgmthux.hux-decdev.biz
+    - pushgateway.mgmthux.hux-scadev.biz
     pathType: ImplementationSpecific
     tls:
     - hosts:
-      - pushgateway.mgmthux.hux-decdev.biz
+      - pushgateway.mgmthux.hux-scadev.biz
       secretName: prometheus-pushgateway-tls
 
 
