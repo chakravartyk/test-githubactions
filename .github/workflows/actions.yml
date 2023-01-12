@@ -12,10 +12,6 @@ on:
 jobs:
   Generate-Boilerplate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
     steps:
     - name: 'Step 1 - Checkout'
       uses: actions/checkout@v3
