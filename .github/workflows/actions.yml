@@ -19,6 +19,30 @@ jobs:
       with:
         fetch-depth: 0
 
+    # - name: Install Boilerplate
+    #   uses: chakravartyk/GHA-boilerplate@c349c3d2dd00eb338d3206fb30ca6484ade685da
+    #   with:
+    #     GRUNTWORK_INSTALLER_VERSION: v0.0.38
+    #     BOILERPLATE_VERSION: v0.5.3
+    #     GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
+
+    # - name: Verify Installation
+    #   run: |
+    #    set -e
+    #    boilerplate -v
+
+    # - name: Generate Boilerplate Template
+    #   shell: bash
+    #   run: |
+    #    set -xeo pipefail
+    #    environments=$(git diff -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
+    #    for env in $environments; do if [ $(ls $env) ]; then boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file $env/* ; fi; done
+
+    # - name: Push Boilerplate Output
+    #   uses: stefanzweifel/git-auto-commit-action@v4
+    #   with:
+    #     commit_message: Generated boilerplate output
+
     - name: Run Linting Checks
       run: |
         pip install pre-commit
