@@ -22,6 +22,7 @@ jobs:
         unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
         mv terraform /usr/local/bin/terraform && rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
         sudo curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/${GRUNTWORK_INSTALLER_VERSION}/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version ${GRUNTWORK_INSTALLER_VERSION}
+        gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
         gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag ${BOILERPLATE_VERSION} --no-sudo true
       shell: bash
       env:
@@ -29,7 +30,7 @@ jobs:
         GRUNTWORK_INSTALLER_VERSION: v0.0.38
         BOILERPLATE_VERSION: v0.5.3
         TERRAGRUNT_VERSION: v0.40.2
-        GITHUB_OAUTH_TOKEN: ${{ secrets.GITHUB_OAUTH_TOKEN }}
+        GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_TOKEN }}
 
     - name: 'Step 4 - Verify installation'
       run: |
