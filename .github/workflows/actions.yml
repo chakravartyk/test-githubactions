@@ -1,55 +1,52 @@
-name: Boilerplate workflow
-run-name: Generate boilerplate argocd-ska config
-
+name: 'pre-commit scan'
+run-name: Generate ArgoCD SKA Config
 on:
   push:
-    paths:
-      - folder/**
-    branches-ignore:
-      - 'main'
-      - 'master'
 
 jobs:
-  Generate-Boilerplate:
-    if: github.event.pull_request.merged == false
+  job1_run_pre_commit:
+    name: 'Job 1 - Run pre-commit checks'
     runs-on: ubuntu-latest
     steps:
     - name: 'Step 1 - Checkout'
       uses: actions/checkout@v3
+    - name: 'Step 2 - Set up Python 3.8'
+      uses: actions/setup-python@v4
       with:
-        fetch-depth: 0
+        python-version: 3.8
 
-    # - name: Install Boilerplate
-    #   uses: chakravartyk/GHA-boilerplate@c349c3d2dd00eb338d3206fb30ca6484ade685da
-    #   with:
-    #     GRUNTWORK_INSTALLER_VERSION: v0.0.38
-    #     BOILERPLATE_VERSION: v0.5.3
-    #     GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_KEY }}
-
-    # - name: Verify Installation
-    #   run: |
-    #    set -e
-    #    boilerplate -v
-
-    # - name: Generate Boilerplate Template
-    #   shell: bash
-    #   run: |
-    #    set -xeo pipefail
-    #    environments=$(git diff -r --name-only origin/main...HEAD | grep -E ^infrastructure-template/environments/ | xargs dirname | sort -u)
-    #    for env in $environments; do if [ $(ls $env) ]; then boilerplate --template-url ./infrastructure-template/blueprints --output-folder .  --non-interactive --var-file $env/* ; fi; done
-
-    # - name: Push Boilerplate Output
-    #   uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: Generated boilerplate output
-
-    - name: Run Linting Checks
+    - name: 'Step 3 - Install tf-tg-bp'
       run: |
-        pip install pre-commit
-        pre-commit run --from-ref origin/main --to-ref HEAD --verbose
-      continue-on-error: true
+        set -xeo pipefail
+        wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+        unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+        mv terraform /usr/local/bin/terraform && rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+        curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh | bash /dev/stdin --no-sudo true --version "$GRUNTWORK_INSTALLER_VERSION"
+        gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
+        gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag "$BOILERPLATE_VERSION" --no-sudo true
+      shell: bash
+      env:
+        TERRAFORM_VERSION: 1.0.11
+        GRUNTWORK_INSTALLER_VERSION: v0.0.38
+        BOILERPLATE_VERSION: v0.5.3
+        TERRAGRUNT_VERSION: v0.40.2
+        GITHUB_OAUTH_TOKEN: ${{ secrets.GITHUB_OAUTH_TOKEN }}
 
-    - name: Push Lint Fix
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: Fixed lint for boilerplate output
+    - name: 'Step 4 - Verify installation'
+      run: |
+        set -eox pipefail
+        boilerplate -v
+        terragrunt -v
+        terraform -v
+
+    # - name: 'Step 5 - Generate boilerplate output'
+    #   run: |
+    #     cd ./$INFRA_DIR_BOILERPLATE && boilerplate --template-url . --output-folder . --non-interactive --var-file config_vars.yml
+    #   env:
+    #     INFRA_DIR_BOILERPLATE: scadev
+
+    - name: 'Step 6 - Run Linting Checks'
+      run: |
+          pip install pre-commit
+          pre-commit run --all-files --verbose
+      continue-on-error: true
