@@ -21,9 +21,8 @@ jobs:
         wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
         unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
         mv terraform /usr/local/bin/terraform && rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-        curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/"$GRUNTWORK_INSTALLER_VERSION"/bootstrap-gruntwork-installer.sh | bash /dev/stdin --no-sudo true --version "$GRUNTWORK_INSTALLER_VERSION"
-        gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
-        gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag "$BOILERPLATE_VERSION" --no-sudo true
+        sudo curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/${{ inputs.GRUNTWORK_INSTALLER_VERSION }}/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version ${{ inputs.GRUNTWORK_INSTALLER_VERSION }}
+        gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag ${{ inputs.BOILERPLATE_VERSION }} --no-sudo true
       shell: bash
       env:
         TERRAFORM_VERSION: 1.0.11
