@@ -15,6 +15,9 @@ jobs:
       with:
        ssh-private-key: ${{ secrets.SSH_KEY }}
 
+    - name: Clone repository
+      run: git clone git@github.com:chakravartyk/tf_assignment.git
+
     - uses: actions/setup-python@v4
       with:
         python-version: 3.8
