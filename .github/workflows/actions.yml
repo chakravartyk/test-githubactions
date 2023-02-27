@@ -16,7 +16,10 @@ jobs:
        ssh-private-key: ${{ secrets.SSH_KEY }}
 
     - name: Clone repository
-      run: git clone git@github.com:chakravartyk/tf_assignment.git
+      run: |
+        git clone git@github.com:chakravartyk/tf_assignment.git
+        cd tf_assignment
+        ls
 
     - uses: actions/setup-python@v4
       with:
