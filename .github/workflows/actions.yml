@@ -17,8 +17,8 @@ jobs:
 
     - name: Clone repository
       run: |
-        git clone git@github.com:chakravartyk/tf_assignment.git
-        cd tf_assignment
+        git clone git@github.com:DeloitteHux/Terraform-GCP-live.git
+        cd Terraform-GCP-live
         ls
 
     - uses: actions/setup-python@v4
