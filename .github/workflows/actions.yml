@@ -11,44 +11,9 @@ jobs:
     - name: 'Step 1 - Checkout'
       uses: actions/checkout@v3
 
-    - uses: webfactory/ssh-agent@v0.7.0
-      with:
-       ssh-private-key: ${{ secrets.SSH_KEY }}
-
-    - name: Clone repository
-      run: |
-        git clone git@github.com:DeloitteHux/Terraform-GCP-live.git
-        cd Terraform-GCP-live
-        ls
-
     - uses: actions/setup-python@v4
       with:
         python-version: 3.8
-
-    - name: 'Step 3 - Install tf-tg-bp'
-      run: |
-        set -xeo pipefail
-        wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-        unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-        mv terraform /usr/local/bin/terraform && rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-        sudo curl -Ls https://raw.githubusercontent.com/gruntwork-io/gruntwork-installer/${GRUNTWORK_INSTALLER_VERSION}/bootstrap-gruntwork-installer.sh | bash /dev/stdin --version ${GRUNTWORK_INSTALLER_VERSION}
-        gruntwork-install --binary-name 'terragrunt' --repo 'https://github.com/gruntwork-io/terragrunt' --tag "$TERRAGRUNT_VERSION" --no-sudo true
-        gruntwork-install --binary-name 'boilerplate' --repo 'https://github.com/gruntwork-io/boilerplate' --tag ${BOILERPLATE_VERSION} --no-sudo true
-      shell: bash
-      env:
-        TERRAFORM_VERSION: 1.0.11
-        GRUNTWORK_INSTALLER_VERSION: v0.0.38
-        BOILERPLATE_VERSION: v0.5.3
-        TERRAGRUNT_VERSION: v0.40.2
-        GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_GITHUB_TOKEN }}
-
-    - name: 'Step 4 - Verify installation'
-      run: |
-        set -eox pipefail
-        boilerplate -v
-        terragrunt -v
-        terraform -v
-
     # - name: 'Step 5 - Generate boilerplate output'
     #   run: |
     #     cd ./$INFRA_DIR_BOILERPLATE && boilerplate --template-url . --output-folder . --non-interactive --var-file config_vars.yml
@@ -56,7 +21,7 @@ jobs:
     #     INFRA_DIR_BOILERPLATE: scadev
 
     - name: 'Step 6 - Run Linting Checks'
-      run: |
-          pip install pre-commit
-          pre-commit run --all-files --verbose
+      uses: pre-commit/action@v3.0.0
+      with:
+        extra_args: --from-ref origin/HEAD --to-ref HEAD --verbose
       continue-on-error: true
