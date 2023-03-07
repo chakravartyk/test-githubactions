@@ -45,9 +45,8 @@ jobs:
     - name: 'Step 6 - Run Linting Checks'
       run: |
           pip install pre-commit
-          git fetch origin
-          git diff --name-only origin/HEAD ${{ github.sha }}
-          pre-commit run --color=always --from-ref origin/HEAD --to-ref ${{ github.sha }} --verbose
+          git diff --name-only origin/main ${{ github.sha }}
+          pre-commit run --color=always --from-ref origin/main --to-ref ${{ github.sha }} --verbose
       continue-on-error: true
 
     - name: 'Files modified'
