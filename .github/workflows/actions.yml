@@ -26,5 +26,4 @@ jobs:
           git fetch origin
           git diff --color origin/main ${{ github.sha }}
           pre-commit run --show-diff-on-failure --color=always --from-ref origin/main --to-ref ${{ github.sha }} --verbose
-      continue-on-error: true
-       
+      continue-on-error: true  
