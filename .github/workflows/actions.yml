@@ -33,7 +33,10 @@ jobs:
         uri: 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.40.2/terragrunt_linux_amd64'
         name: 'terrgrunt'
         version: '0.40.2'
-
+    - name: 'Version check'
+      run: |
+        terraform -v 
+        terragrunt -v  
 
     - name: 'Run linting'
       uses: pre-commit/action@v3.0.0
