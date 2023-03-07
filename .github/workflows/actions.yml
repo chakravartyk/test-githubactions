@@ -20,36 +20,36 @@ jobs:
     #   env:
     #     INFRA_DIR_BOILERPLATE: scadev
 
-    - name: 'Step 2 - Add terraform binary'
-      uses: supplypike/setup-bin@v3
-      with:
-        uri: 'https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip'
-        name: 'terraform'
-        version: '1.0.11'
+    # - name: 'Step 2 - Add terraform binary'
+    #   uses: supplypike/setup-bin@v3
+    #   with:
+    #     uri: 'https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip'
+    #     name: 'terraform'
+    #     version: '1.0.11'
 
-    - name: 'Step 2 - Add terragrunt binary'
-      uses: supplypike/setup-bin@v3
-      with:
-        uri: 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.40.2/terragrunt_linux_amd64'
-        name: 'terragrunt'
-        version: '0.40.2'
-    - name: 'Version check'
+    # - name: 'Step 2 - Add terragrunt binary'
+    #   uses: supplypike/setup-bin@v3
+    #   with:
+    #     uri: 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.40.2/terragrunt_linux_amd64'
+    #     name: 'terragrunt'
+    #     version: '0.40.2'
+    # - name: 'Version check'
+    #   run: |
+    #     terraform -v 
+    #     terragrunt -v  
+
+    # - name: 'Run linting'
+    #   uses: pre-commit/action@v3.0.0
+
+
+    - name: 'Step 6 - Run Linting Checks'
       run: |
-        terraform -v 
-        terragrunt -v  
+          pip install pre-commit
+          git fetch origin
+          git diff --name-only origin/HEAD ${{ github.sha }}
+          pre-commit run --color=always --from-ref origin/HEAD --to-ref ${{ github.sha }} --verbose
+      continue-on-error: true
 
-    - name: 'Run linting'
-      uses: pre-commit/action@v3.0.0
-
-
-    # - name: 'Step 6 - Run Linting Checks'
-    #   run: |
-    #       pip install pre-commit
-    #       git fetch origin
-    #       git diff --name-only origin/main ${{ github.sha }}
-    #       pre-commit run --color=always --from-ref origin/main --to-ref ${{ github.sha }} --verbose
-    #   continue-on-error: true
-
-    # - name: 'Files modified'
-    #   run: |
-    #     git --no-pager diff
+    - name: 'Files modified'
+      run: |
+        git --no-pager diff
