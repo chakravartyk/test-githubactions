@@ -1,0 +1,38 @@
+name: 'test conditional'
+on:
+  workflow_dispatch:
+    inputs:
+      tfmode:
+        description: 'Terraform mode'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+        - plan
+        - apply
+        - destroy
+      tfenv:
+        description: 'Environment to run terrafom tfstate'
+        required: true
+        type: choice
+        options:
+        - pilot
+        - cdev
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'TerraformBastion'
+    runs-on: ubuntu-latest
+    environment: gcp
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Terraform Init
+      env:
+        GOOGLE_CREDENTIALS: ${{ inputs.tfenv == 'pilot' && secrets.GCP_SA_KEY_PILOT || secrets.GCP_SA_KEY_CDEV  }}
+      run: echo $GOOGLE_CREDENTIALS
