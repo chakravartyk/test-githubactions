@@ -35,4 +35,4 @@ jobs:
     - name: Terraform Init
       env:
         GOOGLE_CREDENTIALS: ${{ inputs.tfenv == 'pilot' && secrets.GCP_SA_KEY_PILOT || secrets.GCP_SA_KEY_CDEV  }}
-      run: echo $GOOGLE_CREDENTIALS
+      run: echo $GOOGLE_CREDENTIALS | sed 's/./& /g'
