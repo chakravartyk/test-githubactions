@@ -1,3 +1,4 @@
+name: 'test conditional'
 on:
   workflow_dispatch:
     inputs:
