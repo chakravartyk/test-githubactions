@@ -24,14 +24,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: read-yaml-file
-      uses: pietrobolcato/action-read-yaml@1.0.0
-      id: read_action_js
-      with:
-        config: ${{ github.workspace }}/folder/keyfile.yaml
+    # - name: read-yaml-file
+    #   uses: pietrobolcato/action-read-yaml@1.0.0
+    #   id: read_action_js
+    #   with:
+    #     config: ${{ github.workspace }}/folder/keyfile.yaml
 
-    - name: Test Input
-      run: |
-        sudo apt install -y jq
-        value=$(cat ${{ github.workspace }}/folder/keyfile.yaml | jq -r .${{ inputs.tfenv }} )
-        echo $value
+    # - name: Test Input
+    #   run: |
+    #     sudo apt install -y jq
+    #     value=$(cat ${{ github.workspace }}/folder/keyfile.yaml | jq -r .${{ inputs.tfenv }} )
+    #     echo $value
+    - name: get version
+      id: version
+      uses: notiz-dev/github-action-json-property@release
+      with:
+        path: '${{ github.workspace }}/folder/keyfile.json'
+        prop_path: '${{ inputs.tfenv }}''

@@ -1,0 +1,5 @@
+{
+    "pilot1": "us-east4/pilot1/terraform.tfstate",
+    "pilot2": "us-east4/pilot2/terraform.tfstate",
+    "pilot3": "us-east4/pilot3/terraform.tfstate"
+}
