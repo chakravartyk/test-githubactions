@@ -24,9 +24,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Read input key file
+    - name: read-yaml-file
+      uses: pietrobolcato/action-read-yaml@1.0.0
       id: getinput
-      run: echo "$(cat .github/keyfile.yaml)" >> $GITHUB_OUTPUT
+      with:
+        config: ./github/keyfile.yaml
 
     - name: Test Input
       run: echo ${{ steps.getinput.outputs }}.${{ inputs.tfenv }}
