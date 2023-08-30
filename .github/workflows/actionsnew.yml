@@ -33,5 +33,5 @@ jobs:
     - name: Test Input
       run: |
         sudo apt install -y jq
-        value=$( ${{ steps.read_action_js.outputs }} | jq -r ${{ inputs.tfenv }} )
+        value=$( ${{ steps.read_action_js.outputs }} | jq -r .${{ inputs.tfenv }} )
         echo $value
