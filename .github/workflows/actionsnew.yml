@@ -28,7 +28,7 @@ jobs:
       uses: pietrobolcato/action-read-yaml@1.0.0
       id: getinput
       with:
-        config: ./github/keyfile.yaml
+        config: ${{ github.workspace }}/folder/keyfile.yaml
 
     - name: Test Input
       run: echo ${{ steps.getinput.outputs }}.${{ inputs.tfenv }}
