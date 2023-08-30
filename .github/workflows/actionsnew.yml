@@ -26,7 +26,7 @@ jobs:
 
     - name: Read input key file
       id: getinput
-      run: echo "$(cat keyfile.yaml)" >> $GITHUB_OUTPUT
+      run: echo "$(cat .github/keyfile.yaml)" >> $GITHUB_OUTPUT
 
     - name: Test Input
       run: echo ${{ steps.getinput.outputs }}.${{ inputs.tfenv }}
