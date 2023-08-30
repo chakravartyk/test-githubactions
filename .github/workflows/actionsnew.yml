@@ -32,5 +32,4 @@ jobs:
 
     - name: Test Input
       run: |
-        value=${{ steps.read_action_js.outputs }}
-        echo $value
+        echo "EXTRACTED_VALUE=${{ steps.read_action_js.outputs[${{ inputs.tfenv }}] }}"
