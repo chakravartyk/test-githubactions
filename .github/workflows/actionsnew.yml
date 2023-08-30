@@ -32,4 +32,4 @@ jobs:
 
     - name: Test Input
       run: |
-         echo hello-${{ steps.read_action_js.outputs['pilot1'] }}
+         echo hello-${{ steps.read_action_js.outputs['${{ inputs.tfenv }}'] }}
