@@ -31,4 +31,4 @@ jobs:
         config: ${{ github.workspace }}/folder/keyfile.yaml
 
     - name: Test Input
-      run: echo ${{ steps.getinput.outputs }}
+      run: echo ${{ steps.getinput.outputs['pilot1'] }}
