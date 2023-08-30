@@ -2,22 +2,14 @@ name: 'test conditional'
 on:
   workflow_dispatch:
     inputs:
-      tfmode:
-        description: 'Terraform mode'
-        required: true
-        default: 'plan'
-        type: choice
-        options:
-        - plan
-        - apply
-        - destroy
       tfenv:
         description: 'Environment to run terrafom tfstate'
         required: true
         type: choice
         options:
-        - pilot
-        - cdev
+        - pilot1
+        - pilot2
+        - pilot3
 
 permissions:
   contents: read
@@ -32,7 +24,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Terraform Init
-      env:
-        GOOGLE_CREDENTIALS: ${{ inputs.tfenv == 'pilot' && secrets.GCP_SA_KEY_PILOT || secrets.GCP_SA_KEY_CDEV  }}
-      run: echo $GOOGLE_CREDENTIALS | sed 's/./& /g'
+    - name: Read input key file
+      id: getinput
+      run: echo "$(cat keyfile.yaml)" >> $GITHUB_OUTPUT
+
+    - name: Test Input
+      run: echo ${{ steps.getinput.outputs }}.${{ inputs.tfenv }}
