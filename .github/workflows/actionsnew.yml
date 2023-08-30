@@ -40,4 +40,6 @@ jobs:
       uses: notiz-dev/github-action-json-property@release
       with:
         path: '${{ github.workspace }}/folder/keyfile.json'
-        prop_path: '${{ inputs.tfenv }}''
+        prop_path: '${{ inputs.tfenv }}'
+    - name: Output value
+      run: echo ${{steps.format_script.outputs.prop}}
