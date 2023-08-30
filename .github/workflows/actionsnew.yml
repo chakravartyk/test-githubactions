@@ -32,4 +32,6 @@ jobs:
 
     - name: Test Input
       run: |
-        echo "EXTRACTED_VALUE=${{ steps.read_action_js.outputs[${{ inputs.tfenv }}] }}"
+        apt install -y jq
+        value=$( ${{ steps.read_action_js.outputs }} | jq -r ${{ inputs.tfenv }} )
+        echo $value
