@@ -42,4 +42,4 @@ jobs:
         path: '${{ github.workspace }}/folder/keyfile.json'
         prop_path: '${{ inputs.tfenv }}'
     - name: Output value
-      run: echo ${{steps.version.outputs.propStr}}
+      run: echo terraform init -backend=true -backend-config="bucket=ccon-gcp-${{ inputs.tfenv }}-tfstate" -backend-config="prefix=${{steps.version.outputs.propStr}}"
