@@ -26,9 +26,10 @@ jobs:
 
     - name: read-yaml-file
       uses: pietrobolcato/action-read-yaml@1.0.0
-      id: getinput
+      id: read_action_js
       with:
         config: ${{ github.workspace }}/folder/keyfile.yaml
 
     - name: Test Input
-      run: echo ${{ steps.getinput.outputs['pilot1'] }}
+      run: |
+         echo hello-${{ steps.read_action_js.outputs }}
