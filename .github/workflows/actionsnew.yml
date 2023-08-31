@@ -5,11 +5,6 @@ on:
       tfenv:
         description: 'Environment to run terrafom tfstate'
         required: true
-        type: choice
-        options:
-        - pilot1
-        - pilot2
-        - pilot3
 
 permissions:
   contents: read
