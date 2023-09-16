@@ -2,6 +2,9 @@ name: 'test conditional'
 on:
   workflow_dispatch:
     inputs:
+      tfmode:
+        description: 'Action foe terraform'
+        required: true
       tfenv:
         description: 'Environment to run terrafom tfstate'
         required: true
@@ -13,28 +16,20 @@ jobs:
   terraform:
     name: 'TestDynamicInput'
     runs-on: ubuntu-latest
+    if: ${{ inputs.tfmode }} != "destroy"
     environment: gcp
 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # - name: read-yaml-file
-    #   uses: pietrobolcato/action-read-yaml@1.0.0
-    #   id: read_action_js
-    #   with:
-    #     config: ${{ github.workspace }}/folder/keyfile.yaml
-
-    # - name: Test Input
-    #   run: |
-    #     sudo apt install -y jq
-    #     value=$(cat ${{ github.workspace }}/folder/keyfile.yaml | jq -r .${{ inputs.tfenv }} )
-    #     echo $value
-    - name: get version
-      id: version
-      uses: notiz-dev/github-action-json-property@release
-      with:
-        path: '${{ github.workspace }}/folder/keyfile.json'
-        prop_path: '${{ inputs.tfenv }}'
     - name: Output value
-      run: echo terraform init -backend=true -backend-config="bucket=ccon-gcp-${{ inputs.tfenv }}-tfstate" -backend-config="prefix=${{steps.version.outputs.propStr}}"
+      run: echo "hello tfmode:${{ inputs.tfmode }} is not equal to destroy"
+  destroy_job:
+    name: 'Terraform Destroy Job'
+    runs-on: ubuntu-latest
+    if: ${{ inputs.tfmode }} == 'destroy'
+    steps:
+      - name: Output value
+        run: echo "hello tfmode:${{ inputs.tfmode }} equals destroy"
+   
