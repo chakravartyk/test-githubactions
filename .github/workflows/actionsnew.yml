@@ -16,7 +16,7 @@ jobs:
   terraform:
     name: 'TestDynamicInput'
     runs-on: ubuntu-latest
-    if: ${{ inputs.tfmode }} != "destroy"
+    if: ${{ inputs.tfmode }} == "plan"
     environment: gcp
 
     steps:
