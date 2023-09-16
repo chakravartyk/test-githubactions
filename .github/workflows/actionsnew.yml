@@ -3,11 +3,13 @@ on:
   workflow_dispatch:
     inputs:
       tfmode:
-        description: 'Action foe terraform'
+        description: 'Action for terraform'
         required: true
+        default: plan
       tfenv:
         description: 'Environment to run terrafom tfstate'
         required: true
+        default: pilot
 
 permissions:
   contents: read
@@ -16,7 +18,7 @@ jobs:
   terraform:
     name: 'TestDynamicInput'
     runs-on: ubuntu-latest
-    if: ${{ inputs.tfmode }} == "plan"
+    if: (github.event.inputs.tfmode == 'plan' || github.event.inputs.tfmode == 'apply')
     environment: gcp
 
     steps:
@@ -28,7 +30,7 @@ jobs:
   destroy_job:
     name: 'Terraform Destroy Job'
     runs-on: ubuntu-latest
-    if: ${{ inputs.tfmode }} == 'destroy'
+    if: (github.event.inputs.tfmode == 'destroy' )
     steps:
       - name: Output value
         run: echo "hello tfmode:${{ inputs.tfmode }} equals destroy"
