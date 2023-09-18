@@ -1,20 +1,20 @@
 {
-    "pilot":{
-        "project_id": "dip-gcp-converconsumer-sbx"
-        "tfstate": "ccon-pilot-tfstate",
-        "secret": "GCP_PILOT_SA"
-        "environments": {
-            "env1": "us-east4/env1",
-            "env2": "us-east1/env2"
-        }       
-    },
-    "cdev":{
-        "project_id": "dip-gcpdev-converconsumer"
-        "tfstate": "ccon-cdev-tfstate"
-        "secret": "GCP_CDEV_SA"
-        "environments": {
-            "env1": "us-east4/env1",
-            "env2": "us-east4/env2"
-        }
-    }
+	"pilot": {
+		"project_id": "dip-gcp-converconsumer-sbx",
+		"tfstate": "ccon-pilot-tfstate",
+		"secret": "GCP_PILOT_SA",
+		"environments": {
+			"env1": "us-east4/env1",
+			"env2": "us-east1/env2"
+		}
+	},
+	"cdev": {
+		"project_id": "dip-gcpdev-converconsumer",
+		"tfstate": "ccon-cdev-tfstate",
+		"secret": "GCP_CDEV_SA",
+		"environments": {
+			"env1": "us-east4/env1",
+			"env2": "us-east4/env2"
+		}
+	}
 }
