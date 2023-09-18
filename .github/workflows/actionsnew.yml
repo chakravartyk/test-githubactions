@@ -2,14 +2,12 @@ name: 'test conditional'
 on:
   workflow_dispatch:
     inputs:
-      tfmode:
-        description: 'Action for terraform'
-        required: true
-        default: plan
       tfenv:
         description: 'Environment to run terrafom tfstate'
         required: true
-        default: pilot
+      project_alias:
+        description: 'Project Identifier'
+        required: true
 
 permissions:
   contents: read
@@ -18,20 +16,17 @@ jobs:
   terraform:
     name: 'TestDynamicInput'
     runs-on: ubuntu-latest
-    if: (github.event.inputs.tfmode == 'plan' || github.event.inputs.tfmode == 'apply')
     environment: gcp
 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: get version
+      id: version
+      uses: notiz-dev/github-action-json-property@release
+      with:
+        path: '${{ github.workspace }}/folder/keyfile.json'
+        prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}'
     - name: Output value
-      run: echo "hello tfmode:${{ inputs.tfmode }} is not equal to destroy"
-  destroy_job:
-    name: 'Terraform Destroy Job'
-    runs-on: ubuntu-latest
-    if: (github.event.inputs.tfmode == 'destroy' )
-    steps:
-      - name: Output value
-        run: echo "hello tfmode:${{ inputs.tfmode }} equals destroy"
-   
+      run: echo "${{steps.version.outputs.propStr}}"
