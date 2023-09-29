@@ -10,8 +10,12 @@ on:
         description: 'Project Identifier'
         default: pilot
         required: true
-env:
-  SECRET: GCP_SA_KEY_PILOT
+      secret_name:
+       description: Secret Name
+       default: GCP_SA_KEY_PILOT
+       required: true
+# env:
+#   SECRET: GCP_SA_KEY_PILOT
 
 permissions:
   contents: read
@@ -43,15 +47,17 @@ jobs:
     name: Verify
     runs-on: ubuntu-latest
     needs: ['terraform']
-    env:
-      PATH: ${{ needs.terraform.outputs.path }}
     steps:
-        - name: Output value
-          run: |
-            echo $PATH
-            echo $SECRET
         - name: Echo secret
           shell: bash
+          env:
+            SECRET_NAME: ${{ inputs.secret_name }}
           run: |
-            secret_name=${{ needs.terraform.outputs.secret }}
-            echo ${{ secrets[secret_name] }}
+            SECRET_VALUE=$(echo "${{ secrets[SECRET_NAME] }}")
+            echo "The secret value is $SECRET_VALUE"
+          # run: |
+          #   echo ${{ secrets[env.SECRET] }}
+
+
+
+
