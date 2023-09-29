@@ -53,6 +53,5 @@ jobs:
         - name: Echo secret
           shell: bash
           run: |
-            echo ${{ secrets[env.SECRET] }}
-          env:
-            SECRET: ${{ needs.terraform.outputs.secret }}
+            secret_name=${{ needs.terraform.outputs.secret }}
+            echo ${{ secrets[secret_name] }}
