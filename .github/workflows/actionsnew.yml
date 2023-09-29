@@ -1,6 +1,5 @@
 name: 'test conditional'
 on:
-  push:
   workflow_dispatch:
     inputs:
       tfenv:
