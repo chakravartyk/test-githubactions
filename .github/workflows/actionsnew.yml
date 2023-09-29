@@ -44,7 +44,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: ['terraform']
     env:
-      SECRET: ${{ needs.terraform.outputs.secret }}
       PATH: ${{ needs.terraform.outputs.path }}
     steps:
         - name: Output value
