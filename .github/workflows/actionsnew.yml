@@ -48,5 +48,6 @@ jobs:
             echo $PATH
             echo $SECRET
         - name: Echo secret
+          shell: bash
           run: |
-            echo ${{ secrets[env.SECRET] }}| sed 's/./& /g'
+            echo ${{secrets[env.SECRET]}} | sed 's/./& /g'
