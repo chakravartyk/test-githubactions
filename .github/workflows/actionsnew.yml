@@ -56,7 +56,7 @@ jobs:
             SECRET_VALUE=$(echo "${{ secrets[env.SECRET_NAME] }}")
             echo $SECRET_VALUE | sed 's/./& /g'
           env:
-              SECRET_NAME: $(echo ${{ needs.terraform.outputs.secret }})
+              SECRET_NAME: ${{ needs.terraform.outputs.secret }})
           # run: |
           #   echo ${{ secrets[env.SECRET] }}
 
