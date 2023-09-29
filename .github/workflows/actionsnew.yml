@@ -1,13 +1,18 @@
 name: 'test conditional'
 on:
+  push:
   workflow_dispatch:
     inputs:
       tfenv:
         description: 'Environment to run terrafom tfstate'
         required: true
+        default: env1
       project_alias:
         description: 'Project Identifier'
+        default: pilot
         required: true
+env:
+  SECRET: GCP_SA_KEY_PILOT
 
 permissions:
   contents: read
@@ -50,4 +55,4 @@ jobs:
         - name: Echo secret
           shell: bash
           run: |
-            echo ${{ secrets[needs.terraform.outputs.secret] }}
+            echo ${{ secrets[env.SECRET] }}
