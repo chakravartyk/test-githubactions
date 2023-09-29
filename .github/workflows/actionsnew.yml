@@ -8,6 +8,11 @@ on:
       project_alias:
         description: 'Project Identifier'
         required: true
+      secret:
+        description: 'Secret Name'
+        required: true
+env:
+  SECRET: ${{ inputs.secret }}
 
 permissions:
   contents: read
@@ -27,6 +32,10 @@ jobs:
       uses: notiz-dev/github-action-json-property@release
       with:
         path: '${{ github.workspace }}/folder/keyfile.json'
-        prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}'
+        prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}.prefix'
     - name: Output value
       run: echo "${{steps.version.outputs.propStr}}"
+    - name: Echo secret
+      run: |
+        SECRET=${{ secrets[env.SECRET] }}
+        echo "YOUR_SECRET= $SECRET "

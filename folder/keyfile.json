@@ -4,7 +4,9 @@
 		"tfstate": "ccon-pilot-tfstate",
 		"secret": "GCP_PILOT_SA",
 		"environments": {
-			"env1": "us-east4/env1",
+			"env1": {
+                "prefix": "us-east4/env1"
+            },
 			"env2": "us-east1/env2"
 		}
 	},
