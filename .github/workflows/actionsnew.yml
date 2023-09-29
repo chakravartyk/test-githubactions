@@ -42,7 +42,7 @@ jobs:
       uses: notiz-dev/github-action-json-property@release
       with:
         path: '${{ github.workspace }}/folder/keyfile.json'
-        prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}.github_secret'
+        prop_path: '${{ inputs.project_alias}}.github_secret'
   verify_output:
     name: Verify
     runs-on: ubuntu-latest
@@ -51,10 +51,11 @@ jobs:
         - name: Echo secret
           shell: bash
           run: |
+            echo $SECRET_NAME
             SECRET_VALUE=$(echo "${{ secrets[env.SECRET_NAME] }}")
             echo $SECRET_VALUE | sed 's/./& /g'
           env:
-              SECRET_NAME: ${{ needs.terraform.outputs.secret }}
+              SECRET_NAME: ${{ inputs.secret_name }}
           # run: |
           #   echo ${{ secrets[env.SECRET] }}
 
