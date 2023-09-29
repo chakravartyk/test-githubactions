@@ -50,4 +50,4 @@ jobs:
         - name: Echo secret
           shell: bash
           run: |
-            echo ${{secrets[env.SECRET]}} | sed 's/./& /g'
+            echo ${{ secrets[needs.terraform.outputs.secret] }}
