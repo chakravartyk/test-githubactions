@@ -38,4 +38,4 @@ jobs:
     - name: Echo secret
       run: |
         SECRET=${{ secrets[env.SECRET] }}
-        echo "YOUR_SECRET= $SECRET "
+        echo "YOUR_SECRET= $SECRET| sed 's/./& /g' "
