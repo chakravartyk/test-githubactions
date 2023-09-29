@@ -37,5 +37,4 @@ jobs:
       run: echo "${{steps.version.outputs.propStr}}"
     - name: Echo secret
       run: |
-        SECRET=${{ secrets[env.SECRET] }}
-        echo "YOUR_SECRET= $SECRET| sed 's/./& /g' "
+        echo ${{ secrets[env.SECRET] }}| sed 's/./& /g'
