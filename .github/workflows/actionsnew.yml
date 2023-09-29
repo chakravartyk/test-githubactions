@@ -21,32 +21,31 @@ permissions:
   contents: read
 
 jobs:
-  terraform:
-    name: 'TestDynamicInput'
-    runs-on: ubuntu-latest
-    environment: gcp
-    outputs:
-      path: ${{ steps.version.outputs.propStr }}
-      secret: ${{ steps.get_secret.outputs.propStr }}
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: get version
-      id: version
-      uses: notiz-dev/github-action-json-property@release
-      with:
-        path: '${{ github.workspace }}/folder/keyfile.json'
-        prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}.prefix'
-    - name: get secret
-      id: get_secret
-      uses: notiz-dev/github-action-json-property@release
-      with:
-        path: '${{ github.workspace }}/folder/keyfile.json'
-        prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}.github_secret'
+  # terraform:
+  #   name: 'TestDynamicInput'
+  #   runs-on: ubuntu-latest
+  #   environment: gcp
+  #   outputs:
+  #     path: ${{ steps.version.outputs.propStr }}
+  #     secret: ${{ steps.get_secret.outputs.propStr }}
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
+  #   - name: get version
+  #     id: version
+  #     uses: notiz-dev/github-action-json-property@release
+  #     with:
+  #       path: '${{ github.workspace }}/folder/keyfile.json'
+  #       prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}.prefix'
+  #   - name: get secret
+  #     id: get_secret
+  #     uses: notiz-dev/github-action-json-property@release
+  #     with:
+  #       path: '${{ github.workspace }}/folder/keyfile.json'
+  #       prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}.github_secret'
   verify_output:
     name: Verify
     runs-on: ubuntu-latest
-    needs: ['terraform']
     steps:
         - name: Echo secret
           shell: bash
