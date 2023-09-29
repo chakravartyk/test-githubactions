@@ -54,3 +54,5 @@ jobs:
           shell: bash
           run: |
             echo ${{ secrets[env.SECRET] }}
+          env:
+            SECRET: ${{ needs.terraform.outputs.secret }}
