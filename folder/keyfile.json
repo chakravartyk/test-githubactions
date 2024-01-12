@@ -2,12 +2,13 @@
 	"pilot": {
 		"project_id": "dip-gcp-converconsumer-sbx",
 		"tfstate": "ccon-pilot-tfstate",
-        "github_secret": "GCP_SA_KEY_PILOT",
+                 "github_secret": "GCP_SA_KEY_PILOT",
 		"environments": {
-			"env1": {
-                "prefix": "us-east4/env1"
+		"env1": {
+                     "prefix": "us-east4/env1",
+		     "product": "test"
             },
-			"env2": "us-east1/env2"
+		     "env2": "us-east1/env2"
 		}
 	},
 	"cdev": {
