@@ -2,6 +2,15 @@ name: 'test conditional'
 on:
   workflow_dispatch:
     inputs:
+      tfmode:
+        description: 'Terraform mode'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+        - plan
+        - apply
+        - destroy
       tfenv:
         description: 'Environment to run terrafom tfstate'
         required: true
@@ -10,12 +19,6 @@ on:
         description: 'Project Identifier'
         default: pilot
         required: true
-      secret_name:
-       description: Secret Name
-       default: GCP_SA_KEY_PILOT
-       required: true
-# env:
-#   SECRET: GCP_SA_KEY_PILOT
 
 permissions:
   contents: read
@@ -27,7 +30,7 @@ jobs:
     environment: gcp
     outputs:
       path: ${{ steps.version.outputs.propStr }}
-      secret: ${{ steps.get_secret.outputs.prop }}
+      product: ${{ steps.get_product.outputs.propStr }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -37,25 +40,23 @@ jobs:
       with:
         path: '${{ github.workspace }}/folder/keyfile.json'
         prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}.prefix'
-    - name: get secret
-      id: get_secret
+    - name: get product
+      if: ${{ inputs.tfmode == 'destroy' }}
+      id: get_product
       uses: notiz-dev/github-action-json-property@release
       with:
         path: '${{ github.workspace }}/folder/keyfile.json'
-        prop_path: '${{ inputs.project_alias}}.github_secret'
+        prop_path: '${{ inputs.project_alias}}.environments.${{ inputs.tfenv }}.product'
   verify_output:
     name: Verify
     runs-on: ubuntu-latest
+    if: ${{ inputs.tfmode == 'destroy' }}
     needs: ['terraform']
     steps:
-        - name: Echo secret
+        - name: Echo product name
           shell: bash
           run: |
-            echo ${{ secrets[needs.terraform.outputs.secret] }} | sed 's/./& /g'
-          env:
-              SECRET_NAME: ${{ needs.terraform.outputs.secret }}
-          # run: |
-          #   echo ${{ secrets[env.SECRET] }}
+            echo ${{ needs.terraform.outputs.product }}
 
 
 
