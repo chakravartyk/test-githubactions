@@ -7,8 +7,9 @@
 		"env1": {
                      "prefix": "us-east4/env1",
 		     "product": "test"
-            },
-		     "env2": "us-east1/env2"
+                },
+		"env2": { 
+		     "prefix": "us-east1/env2"
 		}
 	},
 	"cdev": {
