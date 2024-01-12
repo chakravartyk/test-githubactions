@@ -9,8 +9,9 @@
 		     "product": "test"
                 },
 		"env2": { 
-		     "prefix": "us-east1/env2"
-		}
+		     "prefix": "us-east1/env2",
+		},
+	},
 	},
 	"cdev": {
 		"project_id": "dip-gcpdev-converconsumer",
