@@ -3,9 +3,6 @@ run-name: Generate boilerplate argocd-ska config
 
 on:
   push:
-    branches-ignore:
-      - 'main'
-      - 'master'
 
 jobs:
   create_secrets:
